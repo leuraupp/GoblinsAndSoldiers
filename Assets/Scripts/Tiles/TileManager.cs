@@ -5,23 +5,29 @@ using Utils.Core.Singleton;
 
 public class TileManager : Singleton<TileManager>
 {
-    public List<Tiles> tilesPrefabs;
+    public GameObject emptyTile;
+    public GameObject soldierTile;
+    public GameObject grassTile;
 
     //private
     private List<GameObject> tiles;
 
     #region Actions
     public void Init() {
-        foreach (Tiles tile in tilesPrefabs) {
-            //GameObject tileToAdd = Instantiate(tile, transform);
-            //tiles.Add(tileToAdd);
-        }
+        
     }
     #endregion
 
     #region Getters and Setters
-    public Tiles GetTile(string tileName) {
-        
+    public GameObject GetTile(string tileName) {
+
+        if (tileName.Equals("empty")) {
+            return emptyTile;
+        } else if (tileName.Equals("soldier")) {
+            return soldierTile;
+        } else if (tileName.Equals("grass")) {
+            return grassTile;
+        }
 
         return null;
     }
@@ -29,6 +35,16 @@ public class TileManager : Singleton<TileManager>
     public List<Tiles> GetTiles() {
         //return tiles;
         return null;
+    }
+    #endregion
+    #region Actions
+    public void ChangeTile(GameObject tileToChange, string tileName) {
+        GameObject gameObject = GetTile(tileName);
+        if (gameObject != null) {
+            GameObject newTile = Instantiate(gameObject, tileToChange.transform.position, Quaternion.identity);
+            newTile.transform.SetParent(tileToChange.transform.parent);
+            Destroy(tileToChange);
+        }
     }
     #endregion
 }
