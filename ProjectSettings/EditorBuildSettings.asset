@@ -8,4 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
+  - enabled: 1
+    path: Assets/Scenes/map01-easy.unity
+    guid: a907e311da5eeb74a80f18e5528489e4
+  - enabled: 1
+    path: Assets/Scenes/SpriteTest.unity
+    guid: 08d0fe5d126ed884aa33d2e6b72a37e0
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

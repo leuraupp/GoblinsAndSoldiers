@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3690140651312179461}
   - component: {fileID: 3690140651312179466}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1982998457
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.084905684, g: 0.08290319, b: 0.08293742, a: 1}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 3690140651514862940}
   - component: {fileID: 7490529766127965294}
   - component: {fileID: 6983021456778018852}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EmptyTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 3690140651514862943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

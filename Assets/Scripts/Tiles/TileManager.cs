@@ -8,6 +8,7 @@ public class TileManager : Singleton<TileManager>
     public GameObject emptyTile;
     public GameObject soldierTile;
     public GameObject grassTile;
+    public GameObject slimeTile;
 
     //private
     private List<GameObject> tiles;
@@ -27,6 +28,8 @@ public class TileManager : Singleton<TileManager>
             return soldierTile;
         } else if (tileName.Equals("grass")) {
             return grassTile;
+        } else if (tileName.Equals("slime")) {
+            return slimeTile;
         }
 
         return null;
@@ -39,12 +42,24 @@ public class TileManager : Singleton<TileManager>
     #endregion
     #region Actions
     public void ChangeTile(GameObject tileToChange, string tileName) {
-        GameObject gameObject = GetTile(tileName);
-        if (gameObject != null) {
-            GameObject newTile = Instantiate(gameObject, tileToChange.transform.position, Quaternion.identity);
-            newTile.transform.SetParent(tileToChange.transform.parent);
-            Destroy(tileToChange);
-        }
+
+        //GameObject newTile = GetTile(tileName);
+
+        Vector3 currentPosition = tileToChange.transform.position;
+        Vector3 currentScale = tileToChange.transform.localScale;
+
+        Destroy(tileToChange);
+        GameObject newTile = Instantiate(GetTile(tileName), currentPosition, Quaternion.identity);
+        newTile.transform.localScale = currentScale;
+
+        //GameObject gameObject = GetTile(tileName);
+        //if (gameObject != null) {
+        //    Vector3 currentScale = tileToChange.transform.localScale;
+        //    GameObject newTile = Instantiate(gameObject, tileToChange.transform.position, Quaternion.identity);
+        //    newTile.transform.localScale = currentScale;
+        //    newTile.transform.SetParent(tileToChange.transform.parent);
+        //    Destroy(tileToChange);
+        //}
     }
     #endregion
 }
