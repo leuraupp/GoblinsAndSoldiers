@@ -9,18 +9,19 @@ public class TileManager : Singleton<TileManager>
     public GameObject soldierTile;
     public GameObject grassTile;
     public GameObject slimeTile;
+    public GameObject goblinTile;
 
     //private
     private List<GameObject> tiles;
 
     #region Actions
     public void Init() {
-        
+        tiles = new List<GameObject>();
     }
     #endregion
 
     #region Getters and Setters
-    public GameObject GetTile(string tileName) {
+    public GameObject GetTileType(string tileName) {
 
         if (tileName.Equals("empty")) {
             return emptyTile;
@@ -30,36 +31,47 @@ public class TileManager : Singleton<TileManager>
             return grassTile;
         } else if (tileName.Equals("slime")) {
             return slimeTile;
+        } else if (tileName.Equals("goblin")) {
+            return goblinTile;
         }
 
         return null;
     }
 
-    public List<Tiles> GetTiles() {
-        //return tiles;
+    public void SetTile(GameObject tile) {
+        tiles.Add(tile);
+    }
+
+    public GameObject GetTile(string tileName) {
+        foreach (GameObject tile in tiles) {
+            if (tile.name.Equals(tileName)) {
+                return tile;
+            }
+        }
         return null;
+    }
+
+    public List<GameObject> GetTiles() {
+        return tiles;
     }
     #endregion
     #region Actions
-    public void ChangeTile(GameObject tileToChange, string tileName) {
-
-        //GameObject newTile = GetTile(tileName);
-
+    public void CreateTile(GameObject tile, Vector3 position, float cellSize, string tileName) {
+        GameObject square = Instantiate(tile, position, Quaternion.identity, transform);
+        square.transform.localScale = new Vector3(cellSize, cellSize, 1);
+        square.name = tileName;
+        SetTile(square);
+    }
+    public void ChangeTile(GameObject tileToChange, string tileType, string tileName) {
         Vector3 currentPosition = tileToChange.transform.position;
         Vector3 currentScale = tileToChange.transform.localScale;
 
+        GetTiles().Remove(tileToChange);
         Destroy(tileToChange);
-        GameObject newTile = Instantiate(GetTile(tileName), currentPosition, Quaternion.identity);
+        GameObject newTile = Instantiate(GetTileType(tileType), currentPosition, Quaternion.identity, transform);
         newTile.transform.localScale = currentScale;
-
-        //GameObject gameObject = GetTile(tileName);
-        //if (gameObject != null) {
-        //    Vector3 currentScale = tileToChange.transform.localScale;
-        //    GameObject newTile = Instantiate(gameObject, tileToChange.transform.position, Quaternion.identity);
-        //    newTile.transform.localScale = currentScale;
-        //    newTile.transform.SetParent(tileToChange.transform.parent);
-        //    Destroy(tileToChange);
-        //}
+        newTile.name = tileName;
+        SetTile(newTile);
     }
     #endregion
 }

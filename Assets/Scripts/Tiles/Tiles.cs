@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 public class Tiles : MonoBehaviour {
     public string tileName;
 
+    public string GetTileName() {
+        return tileName;
+    }
+
     private void OnMouseOver() {
         Debug.Log("Mouse is over GameObject.");
         if (Input.GetMouseButtonDown(0)) {
@@ -16,6 +20,6 @@ public class Tiles : MonoBehaviour {
     }
 
     private void ChangeTile(string type) {
-        TileManager.Instance.ChangeTile(gameObject, type);
+        TileManager.Instance.ChangeTile(gameObject, type, gameObject.name);
     }
 }

@@ -7,6 +7,7 @@ public class GridManager : Singleton<GridManager> {
 
     public GameObject emptyTile;
     public GameObject board;
+
     public float padding = 0.1f;
     public float margin = 0.5f;
     public float minPadding = 0.1f;
@@ -33,31 +34,11 @@ public class GridManager : Singleton<GridManager> {
                 float posY = boardCollider.bounds.min.y + margin + i * (cellSize + actualPaddingY) + cellSize / 2;
                 Vector3 position = new Vector3(posX, posY, 0);
 
-                GameObject square = Instantiate(emptyTile, position, Quaternion.identity, transform);
-                square.transform.localScale = new Vector3(cellSize, cellSize, 1);
-                square.name = "Tile_" + i + "_" + j;
+                TileManager.Instance.CreateTile(emptyTile, position, cellSize, "Tile_"+i+"_"+j);
             }
         }
 
-        SetLevel(levelName);
-    }
-
-    private void SetLevel(string levelName) {
-        List<string> monstersMap = new List<string>();
-
-        Debug.Log("levelName: " + levelName);
-
-        if (levelName.Equals("map01-easy")) {
-            monstersMap.Add("slime,0,0");
-            monstersMap.Add("slime,2,3");
-            monstersMap.Add("slime,2,1");
-            monstersMap.Add("slime,4,3");
-            monstersMap.Add("slime,4,0");
-        }
-
-        foreach (var gridMap in monstersMap) {
-            SetMonsterOnGrid(gridMap);
-        }
+        LevelManager.Instance.SetLevel(levelName);
     }
 
     public void SetMonsterOnGrid(string gridMap) {
@@ -69,7 +50,7 @@ public class GridManager : Singleton<GridManager> {
         Debug.Log("row: " + row + " column: " + column);
 
         GameObject tileToChange = GameObject.Find("Tile_" + row + "_" + column);
-        TileManager.Instance.ChangeTile(tileToChange, monsterType);
+        TileManager.Instance.ChangeTile(tileToChange, monsterType, "Tile_" + row + "_" + column);
     }
 
 }
