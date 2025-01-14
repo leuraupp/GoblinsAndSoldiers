@@ -28,17 +28,29 @@ public class GridManager : Singleton<GridManager> {
         float actualPaddingX = (availableWidth - (columns * cellSize)) / (columns - 1);
         float actualPaddingY = (availableHeight - (rows * cellSize)) / (rows - 1);
 
+        float delayOffset = 0.01f;
+
+        List<string> mosntersList = LevelManager.Instance.SetLevel(levelName);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
+                bool isMonster = false;
+
                 float posX = boardCollider.bounds.min.x + margin + j * (cellSize + actualPaddingX) + cellSize / 2;
                 float posY = boardCollider.bounds.min.y + margin + i * (cellSize + actualPaddingY) + cellSize / 2;
                 Vector3 position = new Vector3(posX, posY, 0);
 
-                TileManager.Instance.CreateTile(emptyTile, position, cellSize, "Tile_"+i+"_"+j);
+                mosntersList.ForEach(monster => {
+                    if (monster.Split(',')[1].Equals(i.ToString()) && monster.Split(',')[2].Equals(j.ToString())) {
+                        TileManager.Instance.CreateTile(TileManager.Instance.GetTileType(monster.Split(',')[0]), position, cellSize, "Tile_" + i + "_" + j, delayOffset);
+                        isMonster = true;
+                    }
+                });
+                if (!isMonster) {
+                    TileManager.Instance.CreateTile(emptyTile, position, cellSize, "Tile_"+i+"_"+j, delayOffset);
+                }
+                delayOffset += 0.01f;
             }
         }
-
-        LevelManager.Instance.SetLevel(levelName);
     }
 
     public void SetMonsterOnGrid(string gridMap) {
@@ -50,7 +62,7 @@ public class GridManager : Singleton<GridManager> {
         Debug.Log("row: " + row + " column: " + column);
 
         GameObject tileToChange = GameObject.Find("Tile_" + row + "_" + column);
-        TileManager.Instance.ChangeTile(tileToChange, monsterType, "Tile_" + row + "_" + column);
+        TileManager.Instance.ChangeTile(tileToChange, monsterType, "Tile_" + row + "_" + column, true);
     }
 
 }

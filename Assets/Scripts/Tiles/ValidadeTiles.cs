@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using NUnit.Framework.Constraints;
 
 public class ValidadeTiles : MonoBehaviour {
     public GameObject[,] grid;
@@ -28,14 +29,25 @@ public class ValidadeTiles : MonoBehaviour {
                 if (!validPlay) {
                     break;
                 }
+            } else if (tile.GetComponentInChildren<Tiles>().GetTileName().Equals("Orc")) {
+                Debug.Log("Orc found!");
+                validPlay = ValidateOrcTiles(tile.name);
+                if (!validPlay) {
+                    break;
+                }
             }
         }
 
         if (validPlay) {
             GameManager.Instance.ShowMessage("Ataque confirmado!");
+            Invoke("NextLevel", 2f);
         } else {
             GameManager.Instance.ShowMessage("Ataque invalido!");
         }
+    }
+
+    private void NextLevel() {
+        CameraManager.Instance.SetCameraLevel("level02");
     }
 
     void InitializeGrid() {
@@ -49,6 +61,7 @@ public class ValidadeTiles : MonoBehaviour {
         }
     }
 
+    #region Validate Tiles
     private bool validateSlimeTile(string tileName) {
         List<GameObject> adjacentTiles = GetAdjacentTiles(rows, columns, tileName);
 
@@ -110,6 +123,37 @@ public class ValidadeTiles : MonoBehaviour {
 
         return validPlay && soldierFound >= 2;
     }
+
+    private bool ValidateOrcTiles(string tileName) {
+        List<GameObject> adjacentTiles = GetAdjacentTiles(rows, columns, tileName);
+
+        bool validPlay = true;
+        int soldierFound = 0;
+        foreach (GameObject tile in adjacentTiles) {
+            if (tile.GetComponentInChildren<Tiles>().GetTileName().Equals("Soldier")) {
+                Debug.Log("Soldier found! " + soldierFound);
+                if (soldierFound < 3) {
+                    soldierFound++;
+                    List<GameObject> validadeSoldiers = GetAdjacentTiles(rows, columns, tile.name);
+                    foreach (GameObject validadeSoldier in validadeSoldiers) {
+                        if (validadeSoldier.GetComponentInChildren<Tiles>().GetTileName().Equals("Soldier")) {
+                            validPlay = false;
+                            break;
+                        }
+                    }
+                } else {
+                    validPlay = false;
+                    break;
+                }
+            }
+            if (soldierFound >= 3) {
+                break;
+            }
+        }
+
+        return validPlay && soldierFound >= 3;
+    }
+    #endregion
 
     private List<GameObject> GetAdjacentTiles(int rows, int columns, string tileName) {
         List<GameObject> adjacentTiles = new List<GameObject>();
